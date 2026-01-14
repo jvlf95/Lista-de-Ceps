@@ -1,0 +1,18 @@
+[
+  {
+    "cep": "01233-000",
+    "logradouro": "Rua Tupi",
+    "bairro": "Santa Cecília",
+    "localidade": "São Paulo",
+    "uf": "SP",
+    "estado": "São Paulo"
+  },
+  {
+    "cep": "01001-000",
+    "logradouro": "Praça da Sé",
+    "bairro": "Sé",
+    "localidade": "São Paulo",
+    "uf": "SP",
+    "estado": "São Paulo"
+  }
+]
