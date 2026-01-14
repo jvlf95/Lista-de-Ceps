@@ -9,38 +9,28 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ConexaoApi {
-    private String entrada;
-    private String json;
 
-    public ConexaoApi(String entrada){
-        setEntrada(entrada);
-    }
-    public void getConexao() throws IOException, InterruptedException {
+    public CepRe getConexao(String entrada)  {
         String url = "https://viacep.com.br/ws/" + entrada + "/json/";
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        setJson(response.body());
+        }catch (FormatoCepInvalidoException e){
+            System.out.println(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new Gson().fromJson(response.body(), CepRe.class);
     }
 
 
-    public String getEntrada(){
-        return entrada;
-    }
-    public void setEntrada(String entrada){
-        this.entrada = entrada;
-    }
-
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-    }
 }

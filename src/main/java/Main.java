@@ -25,6 +25,7 @@ public class Main {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
+        ConexaoApi conexao = new ConexaoApi();
 
         while(!entrada.equalsIgnoreCase("sair")) {
             System.out.println("Digite um cep para buscar suas informações ou 'sair' para encerrar: ");
@@ -33,19 +34,13 @@ public class Main {
             if(entrada.equalsIgnoreCase("sair")){
                 break;
             }
-            try {
-                ConexaoApi conexao = new ConexaoApi(entrada);
-                conexao.getConexao();
 
-                CepRe cepRe = gson.fromJson(conexao.getJson(), CepRe.class);
-                Cep cep1 = new Cep(cepRe);
-                System.out.println("Objeto convertido");
-                System.out.println(cep1);
+            CepRe cepRe = conexao.getConexao(entrada);
+            Cep cep1 = new Cep(cepRe);
+            System.out.println("Objeto convertido");
+            System.out.println(cep1);
 
-                ceps.add(cep1);
-            }catch (FormatoCepInvalidoException e){
-                System.out.println(e);
-            }
+            ceps.add(cep1);
 
         }
 
