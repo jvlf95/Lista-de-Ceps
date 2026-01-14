@@ -1,5 +1,6 @@
 import br.com.projetojoao.Modelo.Cep;
 import br.com.projetojoao.Modelo.CepRe;
+import br.com.projetojoao.Modelo.ConexaoApi;
 import br.com.projetojoao.Modelo.FormatoCepInvalidoException;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -32,28 +33,17 @@ public class Main {
             if(entrada.equalsIgnoreCase("sair")){
                 break;
             }
-
             try {
-                String url = "https://viacep.com.br/ws/" + entrada + "/json/";
+                ConexaoApi conexao = new ConexaoApi(entrada);
+                conexao.getConexao();
 
-                HttpClient client = HttpClient.newHttpClient();
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(url))
-                        .build();
-                HttpResponse<String> response = client
-                        .send(request, HttpResponse.BodyHandlers.ofString());
-
-                String json = response.body();
-
-                CepRe cepRe = gson.fromJson(json, CepRe.class);
-
+                CepRe cepRe = gson.fromJson(conexao.getJson(), CepRe.class);
                 Cep cep1 = new Cep(cepRe);
                 System.out.println("Objeto convertido");
                 System.out.println(cep1);
 
                 ceps.add(cep1);
-
-            } catch (FormatoCepInvalidoException e) {
+            }catch (FormatoCepInvalidoException e){
                 System.out.println(e);
             }
 
