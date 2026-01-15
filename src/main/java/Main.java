@@ -1,18 +1,9 @@
-import br.com.projetojoao.Modelo.Cep;
-import br.com.projetojoao.Modelo.CepRe;
-import br.com.projetojoao.Modelo.ConexaoApi;
-import br.com.projetojoao.Modelo.FormatoCepInvalidoException;
-import com.google.gson.FieldNamingPolicy;
+import br.com.projetojoao.Modelo.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,11 +11,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[]args) throws IOException, InterruptedException {
         Scanner tec = new Scanner(System.in);
-        String entrada = " ";
+        String entrada = "";
+
         List<Cep> ceps = new ArrayList<>();
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
         ConexaoApi conexao = new ConexaoApi();
 
         while(!entrada.equalsIgnoreCase("sair")) {
@@ -35,21 +24,19 @@ public class Main {
                 break;
             }
 
-            CepRe cepRe = conexao.getConexao(entrada);
-            Cep cep1 = new Cep(cepRe);
-            System.out.println("Objeto convertido");
-            System.out.println(cep1);
-
-            ceps.add(cep1);
-
+            try {
+                CepRe cepRe = conexao.getConexao(entrada);
+                Cep cep1 = new Cep(cepRe);
+                System.out.println("Objeto convertido");
+                System.out.println(cep1);
+                ceps.add(cep1);
+            }catch (RuntimeException e){
+                System.out.println(e.getMessage());
+            }
         }
 
-        String novoJson = gson.toJson(ceps);
-
-        File file = new File("ListaCeps.JSON");
-        FileWriter writer = new FileWriter(file);
-        writer.write(novoJson);
-        writer.close();
+        GeradorDeArquivo arquivo = new GeradorDeArquivo();
+        arquivo.gerarJson(ceps);
 
         System.out.println("Encerrando programa...");
 

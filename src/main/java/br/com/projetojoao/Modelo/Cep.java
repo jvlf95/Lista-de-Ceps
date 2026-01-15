@@ -10,9 +10,6 @@ public class Cep {
 
     public Cep(CepRe cepRe){
         setCep(cepRe.cep());
-        if(getCep().length() > 9){
-            throw new FormatoCepInvalidoException("[Inválido] Cep com mais de 8 dígitos");
-        }
         setBairro(cepRe.bairro());
         setLogradouro(cepRe.logradouro());
         setLocalidade(cepRe.localidade());
