@@ -30,13 +30,14 @@ public class Main {
                 System.out.println("Objeto convertido");
                 System.out.println(cep1);
                 ceps.add(cep1);
+                GeradorDeArquivo arquivo = new GeradorDeArquivo();
+                arquivo.gerarJson(ceps);
             }catch (RuntimeException e){
                 System.out.println(e.getMessage());
             }
         }
 
-        GeradorDeArquivo arquivo = new GeradorDeArquivo();
-        arquivo.gerarJson(ceps);
+
 
         System.out.println("Encerrando programa...");
 

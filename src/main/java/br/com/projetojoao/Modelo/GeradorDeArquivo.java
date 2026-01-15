@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class GeradorDeArquivo {
-    Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .create();
 
     public void gerarJson(List<Cep> ceps) throws IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
         String novoJson = gson.toJson(ceps);
-        File file = new File("ListaCeps.JSON");
-        FileWriter writer = new FileWriter(file);
+        FileWriter writer = new FileWriter("ListaCeps.JSON");
         writer.write(novoJson);
         writer.close();
     }
